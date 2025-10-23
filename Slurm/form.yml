@@ -10,20 +10,24 @@ form:
       - [ r340,        [r340,        ""],                              set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2 ]
       - [ genoa,       [genoa,       system/genoa mpi/openmpi-x86_64], set-label-nodes: Number of nodes (1 - 16), set-max-nodes: 16 ]
       - [ genoa-m,     [genoa-m,     system/genoa mpi/openmpi-x86_64], set-label-nodes: Number of nodes (1),      set-max-nodes:  1 ]
+      - [ ai-h100l,    [ai-h100l,    system/ai-h100l nvhpc],           set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2 ]
+      - [ ai-h100l-pu, [ai-h100l-pu, system/ai-h100l nvhpc],           set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, set-label-time_1: Maximum run time hours (0),     set-max-time_1: 0, set-label-time_2: Maximum run time minutes (0 - 30), set-max-time_2: 30 ]
+      - [ ai-h200-brc, [ai-h200-brc, system/ai-h200-brc nvhpc],        set-label-nodes: Number of nodes (1),      set-max-nodes:  1, set-label-time_1: Maximum run time hours (0 - 8), set-max-time_1: 8, enable-gpus ]
+      - [ ai-l40s,     [ai-l40s,     system/ai-l40s nvhpc] ,           set-label-nodes: Number of nodes (1 - 7),  set-max-nodes:  7, enable-gpus ]
       - [ qc-a100,     [qc-a100,     system/qc-a100 nvhpc],            set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, enable-gpus ]
       - [ qc-h100,     [qc-h100,     system/qc-h100 nvhpc],            set-label-nodes: Number of nodes (1),      set-max-nodes:  1 ]
       - [ qc-gh200,    [qc-gh200,    system/qc-gh200 nvhpc],           set-label-nodes: Number of nodes (1 - 8),  set-max-nodes:  8 ]
+      - [ qc-mi210,    [qc-mi210,    system/qc-mi210],                 set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2 ]
       - [ qc-mi250,    [qc-mi250,    system/qc-mi250 rocm],            set-label-nodes: Number of nodes (1 - 4),  set-max-nodes:  4 ]
       - [ qc-pvc,      [qc-pvc,      system/qc-pvc],                   set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2 ]
-      - [ qc-mi210,    [qc-mi210,    ""],                              set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2 ]
-      - [ ai-h100l,    [ai-h100l,    system/ai-h100l nvhpc],           set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2 ]
-      - [ ai-h100l-pu, [ai-h100l-pu, system/ai-h100l nvhpc],           set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, set-label-time_1: Maximum run time hours (0),     set-max-time_1: 0, set-label-time_2: Maximum run time minutes (0 - 30), set-max-time_2: 30 ]
-      - [ ai-h200-brc, [ai-h200-brc, system/brc-h200 nvhpc],           set-label-nodes: Number of nodes (1),      set-max-nodes:  1, set-label-time_1: Maximum run time hours (0 - 8), set-max-time_1: 8 ]
+      - [ fs-mi300a,   [fs-mi300a,   system/fs-mi300a rocm],           set-label-nodes: Number of nodes (1),      set-max-nodes:  1 ]
+      - [ fs-mi300x,   [fs-mi300x,   system/fs-mi300x rocm],           set-label-nodes: Number of nodes (1),      set-max-nodes:  1 ]
 
   nodes:
     widget: number
     label: Number of nodes
-    value:  1
+    value: 1
+    min: 1
 
   time:
     widget:   number
@@ -98,8 +102,8 @@ script: |
   #{path}
 check: |
   if @partition == "ai-h200-brc"
-    oc_assert((@time_1.to_i !=  8 || @time_2.to_i <= 0), "The run time is within 8 hours.")
+    oc_assert((@time_1 !=  8 || @time_2 <= 0), "The run time is within 8 hours.")
   else
-    oc_assert((@time_1.to_i != 24 || @time_2.to_i <= 0), "The run time is within 24 hours.")
+    oc_assert((@time_1 != 24 || @time_2 <= 0), "The run time is within 24 hours.")
   end
    
