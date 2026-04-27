@@ -1,3 +1,21 @@
+require 'etc'
+
+# 指定したグループ名のいずれかに所属しているかを判定する
+#
+# @param target_groups [Array<String>] 判定対象のグループ名
+# @return [Boolean]
+def belong_to_groups?(target_groups)
+  gids = Process.groups + [Process.gid]
+
+  gids.any? do |gid|
+    begin
+      name = Etc.getgrgid(gid).name
+      target_groups.include?(name)
+    rescue ArgumentError
+      false
+    end
+  end
+end
 ---
 form:
   partition:
@@ -10,7 +28,9 @@ form:
       - [ r340,        [r340,        ""],                              set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2 ]
       - [ genoa,       [genoa,       system/genoa mpi/openmpi-x86_64], set-label-nodes: Number of nodes (1 - 16), set-max-nodes: 16 ]
       - [ genoa-m,     [genoa-m,     system/genoa mpi/openmpi-x86_64], set-label-nodes: Number of nodes (1),      set-max-nodes:  1 ]
+      <% if belong_to_groups?(['rccs-hpbdrt', 'rccs-dmp']) %>
       - [ ai-h100l,    [ai-h100l,    system/ai-h100l nvhpc],           set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2 ]
+      <% end %>
       - [ ai-h100l-pu, [ai-h100l-pu, system/ai-h100l nvhpc],           set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, set-label-time_1: Maximum run time hours (0),     set-max-time_1: 0, set-label-time_2: Maximum run time minutes (0 - 30), set-max-time_2: 30 ]
       - [ ai-h200-brc, [ai-h200-brc, system/ai-h200-brc nvhpc],        set-label-nodes: Number of nodes (1),      set-max-nodes:  1, set-label-time_1: Maximum run time hours (0 - 8), set-max-time_1: 8, enable-gpus ]
       - [ ai-l40s,     [ai-l40s,     system/ai-l40s nvhpc] ,           set-label-nodes: Number of nodes (1 - 7),  set-max-nodes:  7, enable-gpus ]
