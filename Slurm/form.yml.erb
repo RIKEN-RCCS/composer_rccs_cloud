@@ -1,0 +1,163 @@
+<%
+  require 'etc'
+
+  # 指定したグループ名のいずれかに所属しているかを判定する
+  #
+  # @param target_groups [Array<String>] 判定対象のグループ名
+  # @return [Boolean]
+  def belong_to_groups?(target_groups)
+    gids = Process.groups + [Process.gid]
+  
+    gids.any? do |gid|
+      begin
+        name = Etc.getgrgid(gid).name
+        target_groups.include?(name)
+      rescue ArgumentError
+        false
+      end
+    end
+  end
+%>
+---
+form:
+  partition:
+    widget: select
+    label: Partition
+    options:
+      - [ fx700,    fx700,    set-label-nodes: Number of nodes (1 - 31), set-max-nodes: 31, disable-module_nvidia, disable-module_amd, disable-module_intel ]
+      - [ a100,     a100,     set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ b300,     b300,     set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ mi100,    mi100,    set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_nvidia, disable-module_amd, disable-module_intel ]
+      - [ r340,     r340,     set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_nvidia, disable-module_amd, disable-module_intel ]
+      - [ genoa,    genoa,    set-label-nodes: Number of nodes (1 - 16), set-max-nodes: 16, disable-module_fx700, disable-module_nvidia, disable-module_amd, disable-module_intel ]
+      - [ genoa-m,  genoa-m,  set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_nvidia, disable-module_amd, disable-module_intel ]
+      <% if belong_to_groups?(['rccs-hpbdrt', 'rccs-dmp']) %>
+      - [ ai-h100l, ai-h100l, set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      <% end %>
+      - [ ai-h100l-pu, ai-h100l-pu, set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, set-label-time_1: Maximum run time hours (0),     set-max-time_1: 0, set-label-time_2: Maximum run time minutes (0 - 30), set-max-time_2: 30, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ai-h200-brc,    ai-h200-brc,    set-label-nodes: Number of nodes (1),      set-max-nodes:  1, enable-gpus, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ai-h200-brc-pu, ai-h200-brc-pu, set-label-nodes: Number of nodes (1),      set-max-nodes:  1, set-label-time_1: Maximum run time hours (0 - 1), set-max-time_1: 1, enable-gpus, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ai-l40s,        ai-l40s,        set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, enable-gpus, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ qc-a100,        qc-a100,        set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, enable-gpus, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ qc-gh200,       qc-gh200,       set-label-nodes: Number of nodes (1 - 8),  set-max-nodes:  8, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ qc-mi210,       qc-mi210,       set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, disable-module_fx700, disable-module_nvidia, disable-module_intel, hide-module_amd ]
+      - [ qc-mi250,       qc-mi250,       set-label-nodes: Number of nodes (1 - 4),  set-max-nodes:  4, disable-module_fx700, disable-module_nvidia, disable-module_intel, hide-module_amd ]
+      - [ qc-pvc,         qc-pvc,         set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, disable-module_fx700, disable-module_nvidia, disable-module_amd, hide-module_intel ]
+      - [ qc-pro6000,     qc-pro6000,     set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ fs-mi300a,      fs-mi300a,      set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_nvidia, disable-module_intel, hide-module_amd ]
+      - [ fs-mi300x,      fs-mi300x,      set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_nvidia, disable-module_intel, hide-module_amd ]
+      - [ fs-h100,        fs-h100,        set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ng-dgx-s,       ng-dgx-s,       set-label-nodes: Number of nodes (8),      set-max-nodes:  8, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ng-dgx-m0,      ng-dgx-m0,      set-label-nodes: Number of nodes (2),      set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ng-dgx-m1,      ng-dgx-m1,      set-label-nodes: Number of nodes (2),      set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ng-dgx-m2,      ng-dgx-m2,      set-label-nodes: Number of nodes (2),      set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ng-dgx-m3,      ng-dgx-m3,      set-label-nodes: Number of nodes (2),      set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ next-pvc,       next-pvc,       set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_nvidia, disable-module_amd, hide-module_intel ]
+
+  nodes:
+    widget: number
+    label: Number of nodes
+    value: 1
+    min: 1
+
+  time:
+    widget:   number
+    label:    [ Maximum run time hours (0 - 24), Maximum run minutes (0 - 59) ]
+    size:     2
+    value:    [  1,  0 ]
+    min:      [  0,  0 ]
+    max:      [ 24, 59 ]
+    step:     [  1,  1 ]
+
+  gpus:
+    widget:   number
+    label:    Number of GPUs (1 - 8)
+    value:    1
+    min:      1
+    max:      8
+    required: true
+
+  module_fx700:
+    widget: radio
+    label: Module
+    direction: horizontal
+    value: FJSVstclanga
+    options:
+      - [ FJSVstclanga ]
+      - [ mpi/mpich-aarch64 ]
+
+  module_nvidia:
+    widget: radio
+    label: Module
+    direction: horizontal
+    value: cuda
+    options:
+      - [ cuda ]
+      - [ nvhpc ]
+
+  module_amd:
+    widget: text
+    value: "module load rocm"
+
+  module_intel:
+    widget: text
+    value: "source /opt/intel/oneapi/setvars.sh"
+    
+  path:
+    label: File
+    widget: path
+    
+  advanced_options:
+    widget: checkbox
+    options:
+      - [Advanced options, a, show-email, show-mail_option, show-array, show-log ]
+   
+  array:
+    widget: number
+    label: [ Array Job (start index), Array Job (last index) ]
+    size: 2
+    min:  [0, 0]
+    help: Each job executed from an array job is assigned a task ID, which can be referenced in the shell script via the environment variable SLURM_ARRAY_TASK_ID.
+
+  log:
+    widget: text
+    size: 2
+    label: [Standard log (e.g. stdout.%j), Error log (e.g. stderr.%j)]
+    help: The symbol %j will be replaced with the job ID.
+    
+  mail_option:
+    label: Mail option
+    widget: checkbox
+    direction: horizontal
+    separator: ","
+    indent: 1
+    options:
+      - [ "Beginning of job execution", 'BEGIN',   enable-email ]
+      - [ "End of job execution",       'END',     enable-email ]
+      - [ "Fail of job",                'FAIL',    enable-email ]
+      - [ "When the job is requeued",   'REQUEUE', enable-email ]
+      - [ "All",                        'ALL',     enable-email ]
+
+  email:
+    widget: email
+    label:  Email
+    indent: 2
+    
+script: |
+  #!/usr/bin/env bash
+  #SBATCH -p #{partition}
+  #SBATCH -N #{nodes}
+  #SBATCH -t #{time_1}:#{zeropadding(time_2,2)}:00
+  #SBATCH --gpus=#{gpus}
+  #SBATCH --array=#{array_1}-#{array_2}
+  #SBATCH --output=#{log_1}
+  #SBATCH --error=#{log_2}
+  #SBATCH --mail-user=#{email}
+  #SBATCH --mail-type=#{mail_option}
+  module load #{module_fx700}
+  module load #{module_nvidia}
+  #{module_amd}
+  #{module_intel}
+  
+  #{path}
+   
