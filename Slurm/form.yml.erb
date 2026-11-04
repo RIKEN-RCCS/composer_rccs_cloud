@@ -26,7 +26,7 @@ form:
     options:
       - [ fx700,    fx700,    set-label-nodes: Number of nodes (1 - 31), set-max-nodes: 31, disable-module_nvidia, disable-module_amd, disable-module_intel ]
       - [ a100,     a100,     set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
-      - [ b300,     b300,     set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ b300,     b300,     set-label-nodes: Number of nodes (1),      set-max-nodes:  1, enable-gpus, disable-module_fx700, disable-module_amd, disable-module_intel ]
       - [ mi100,    mi100,    set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_nvidia, disable-module_amd, disable-module_intel ]
       - [ r340,     r340,     set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_nvidia, disable-module_amd, disable-module_intel ]
       - [ genoa,    genoa,    set-label-nodes: Number of nodes (1 - 16), set-max-nodes: 16, disable-module_fx700, disable-module_nvidia, disable-module_amd, disable-module_intel ]
@@ -38,6 +38,7 @@ form:
       - [ ai-h200-brc,    ai-h200-brc,    set-label-nodes: Number of nodes (1),      set-max-nodes:  1, enable-gpus, disable-module_fx700, disable-module_amd, disable-module_intel ]
       - [ ai-h200-brc-pu, ai-h200-brc-pu, set-label-nodes: Number of nodes (1),      set-max-nodes:  1, set-label-time_1: Maximum run time hours (0 - 1), set-max-time_1: 1, enable-gpus, disable-module_fx700, disable-module_amd, disable-module_intel ]
       - [ ai-l40s,        ai-l40s,        set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, enable-gpus, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ai-pro6000,     ai-pro6000,     set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, enable-gpus, set-label-gpus: Number of GPUs (0 - 2), set-max-gpus: 2, disable-module_fx700, disable-module_amd, disable-module_intel ]
       - [ qc-a100,        qc-a100,        set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, enable-gpus, disable-module_fx700, disable-module_amd, disable-module_intel ]
       - [ qc-gh200,       qc-gh200,       set-label-nodes: Number of nodes (1 - 8),  set-max-nodes:  8, disable-module_fx700, disable-module_amd, disable-module_intel ]
       - [ qc-mi210,       qc-mi210,       set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, disable-module_fx700, disable-module_nvidia, disable-module_intel, hide-module_amd ]
@@ -47,12 +48,13 @@ form:
       - [ fs-mi300a,      fs-mi300a,      set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_nvidia, disable-module_intel, hide-module_amd ]
       - [ fs-mi300x,      fs-mi300x,      set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_nvidia, disable-module_intel, hide-module_amd ]
       - [ fs-h100,        fs-h100,        set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_amd, disable-module_intel ]
-      - [ ng-dgx-s,       ng-dgx-s,       set-label-nodes: Number of nodes (8),      set-max-nodes:  8, disable-module_fx700, disable-module_amd, disable-module_intel ]
-      - [ ng-dgx-m0,      ng-dgx-m0,      set-label-nodes: Number of nodes (2),      set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
-      - [ ng-dgx-m1,      ng-dgx-m1,      set-label-nodes: Number of nodes (2),      set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
-      - [ ng-dgx-m2,      ng-dgx-m2,      set-label-nodes: Number of nodes (2),      set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
-      - [ ng-dgx-m3,      ng-dgx-m3,      set-label-nodes: Number of nodes (2),      set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ng-dgx-s,       ng-dgx-s,       set-label-nodes: Number of nodes (1 - 8),  set-max-nodes:  8, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ng-dgx-m0,      ng-dgx-m0,      set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ng-dgx-m1,      ng-dgx-m1,      set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ng-dgx-m2,      ng-dgx-m2,      set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
+      - [ ng-dgx-m3,      ng-dgx-m3,      set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, disable-module_fx700, disable-module_amd, disable-module_intel ]
       - [ next-pvc,       next-pvc,       set-label-nodes: Number of nodes (1),      set-max-nodes:  1, disable-module_fx700, disable-module_nvidia, disable-module_amd, hide-module_intel ]
+      - [ next-mi210,     next-mi210,     set-label-nodes: Number of nodes (1 - 2),  set-max-nodes:  2, disable-module_fx700, disable-module_nvidia, disable-module_intel, hide-module_amd ]
 
   nodes:
     widget: number
@@ -71,9 +73,9 @@ form:
 
   gpus:
     widget:   number
-    label:    Number of GPUs (1 - 8)
+    label:    Number of GPUs (0 - 8)
     value:    1
-    min:      1
+    min:      0
     max:      8
     required: true
 
@@ -160,4 +162,4 @@ script: |
   #{module_intel}
   
   #{path}
-   
+  
